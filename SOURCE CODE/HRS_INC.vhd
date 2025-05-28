@@ -1,0 +1,78 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_unsigned.all;
+use work.EE232.all;
+--- entity declaration
+entity HRS_INC is
+    Port ( 
+        CLK    : in  std_logic; -- Clock input
+        RSTN   : in  std_logic; -- Active-low reset
+        H      : in  std_logic; -- Increment enable
+        output : out std_logic_vector(5 downto 0)  -- 6-bit output for seconds
+    );
+end HRS_INC;
+-- architecture declaration
+architecture functionality of HRS_INC is
+
+    -- Define states from s0 to s59
+    type STATE_TYPE is (
+        s0, s1, s2, s3, s4, s5, s6, s7, s8, s9,
+        s10, s11, s12, s13, s14, s15, s16, s17, s18, s19,
+        s20, s21, s22, s23
+    );
+    
+    signal Qs, QPLUS : STATE_TYPE;
+    signal clkout    : std_logic;
+
+begin 
+
+    -- Instantiate clock divider component to generate 1 Hz clock from CLK
+    CLKDIV: CLK_DVD port map(CLK, '1', clkout);
+
+    -- Sequential process to move to the next state on each rising edge of clkout
+    process (RSTN, clkout)
+    begin
+        if RSTN = '0' then
+            Qs <= s0;  -- Reset to initial state
+        elsif rising_edge(clkout) then
+            Qs <= QPLUS;
+        end if;
+    end process;
+
+    -- Combinational process to determine next state and output
+    process (H, Qs)
+    begin
+        case Qs is
+            -- Define transitions for each state and set output for each second
+            when s0  => if H = '1' then QPLUS <= s1;  else QPLUS <= s0;  end if; output <= "000000";
+            when s1  => if H = '1' then QPLUS <= s2;  else QPLUS <= s1;  end if; output <= "000001";
+            when s2  => if H = '1' then QPLUS <= s3;  else QPLUS <= s2;  end if; output <= "000010";
+            when s3  => if H = '1' then QPLUS <= s4;  else QPLUS <= s3;  end if; output <= "000011";
+            when s4  => if H = '1' then QPLUS <= s5;  else QPLUS <= s4;  end if; output <= "000100";
+            when s5  => if H = '1' then QPLUS <= s6;  else QPLUS <= s5;  end if; output <= "000101";
+            when s6  => if H = '1' then QPLUS <= s7;  else QPLUS <= s6;  end if; output <= "000110";
+            when s7  => if H = '1' then QPLUS <= s8;  else QPLUS <= s7;  end if; output <= "000111";
+            when s8  => if H = '1' then QPLUS <= s9;  else QPLUS <= s8;  end if; output <= "001000";
+            when s9  => if H = '1' then QPLUS <= s10; else QPLUS <= s9;  end if; output <= "001001";
+            when s10 => if H = '1' then QPLUS <= s11; else QPLUS <= s10; end if; output <= "001010";
+            when s11 => if H = '1' then QPLUS <= s12; else QPLUS <= s11; end if; output <= "001011";
+            when s12 => if H = '1' then QPLUS <= s13; else QPLUS <= s12; end if; output <= "001100";
+            when s13 => if H = '1' then QPLUS <= s14; else QPLUS <= s13; end if; output <= "001101";
+            when s14 => if H = '1' then QPLUS <= s15; else QPLUS <= s14; end if; output <= "001110";
+            when s15 => if H = '1' then QPLUS <= s16; else QPLUS <= s15; end if; output <= "001111";
+            when s16 => if H = '1' then QPLUS <= s17; else QPLUS <= s16; end if; output <= "010000";
+            when s17 => if H = '1' then QPLUS <= s18; else QPLUS <= s17; end if; output <= "010001";
+            when s18 => if H = '1' then QPLUS <= s19; else QPLUS <= s18; end if; output <= "010010";
+            when s19 => if H = '1' then QPLUS <= s20; else QPLUS <= s19; end if; output <= "010011";
+            when s20 => if H = '1' then QPLUS <= s21; else QPLUS <= s20; end if; output <= "010100";
+            when s21 => if H = '1' then QPLUS <= s22; else QPLUS <= s21; end if; output <= "010101";
+            when s22 => if H = '1' then QPLUS <= s23; else QPLUS <= s22; end if; output <= "010110";
+            when s23 => if H = '1' then QPLUS <= s0; else QPLUS <= s23; end if; output <= "010111";
+			 -- Default case to handle unexpected states
+            when others =>
+                QPLUS <= s0;
+                output <= "000000";
+        end case;
+    end process;
+
+end functionality;

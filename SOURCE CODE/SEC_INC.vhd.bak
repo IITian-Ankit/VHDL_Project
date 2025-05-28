@@ -1,0 +1,50 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use work.EE232.all;
+
+entity SEC_INC is
+	port ( CLK : in std_logic;
+			 RSTN : in std_logic;
+			 S : in std_logic;
+			 output : out std_logic_vector(5 downto 0));
+end SEC_INC;
+
+architecture functionality of SEC_INC is
+
+type STATE_TYPE is (s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23,s24,s25,s26,s27,s28,s29,s30,s31,s32,s33,s34,s35,s36,s37,s38,s39,s40,s41,s42,s43,s44,s45,s46,s47,s48,s49,s50,s51,s52,s53,s54,s55,s56,s57,s58,s59);
+
+signal Qs,QPLUS : STATE_TYPE;
+
+signal RS,clkout: std_logic;
+
+begin 
+
+  CLKDIV: CLK_DVD port map(CLK, RS, clkout);
+	  RS<= '1';
+
+process(RSTN,clkout) begin
+
+if RSTN='0' then
+
+Qs<=s0; 
+ 
+
+elsif rising_edge(clkout) then
+
+Qs<=QPLUS;
+
+end if;
+
+end process;
+
+process(S,Qs)
+
+case Qs is
+
+when S0 =>
+if S = '1' then
+Qs <= s1;
+else Qs <= s0;
+end if;
+output <= "000000";
+

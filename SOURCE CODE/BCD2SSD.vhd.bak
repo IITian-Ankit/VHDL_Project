@@ -1,0 +1,16 @@
+library IEEE;
+use IEEE,std_logic_1164.all;
+use work.EE232.all;
+
+entity BCD2SSD is 
+	port(X : in std_logic_vector(3 downto 0); 
+		  Y : out std_logic_vector(6 downto 0); 
+	     F : out std_logic); 
+end BCD2SSD;
+
+architecture FUNCTIONALITY of BCD2SSD is
+	signal S : std_logic_vector(20 downto 0);
+begin
+	N1 : NOT_1 port map(A,S(0));
+	
+	

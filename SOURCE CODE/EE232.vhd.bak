@@ -1,0 +1,21 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+package EE232 is
+	component AND_2 is
+		port( I0 , I1 : in std_logic;
+				O0 : out std_logic);
+	end component;
+	component OR_2 is
+		port(I0 , I1 : in std_logic;
+			  O0 : out std_logic);
+	component OR_2;
+	component XOR_2 is
+		port( I0,I1 : in std_logic;
+				O0 : out std_logic);
+	component entity;
+	component NOT_1 is
+		port(I0 : in std_logic;
+			  O0 : out std_logic);
+	component entity;
+end package;

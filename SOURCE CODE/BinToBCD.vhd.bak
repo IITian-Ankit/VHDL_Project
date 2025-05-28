@@ -1,0 +1,40 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_unsigned.all;
+
+entity BinToBCD is
+    Port (
+        bin_in  : in  std_logic_vector(5 downto 0);  -- 6-bit binary input
+        bcd_out : out std_logic_vector(7 downto 0)   -- 8-bit BCD output (two 4-bit BCD digits)
+    );
+end BinToBCD;
+
+architecture Behavioral of BinToBCD is
+    signal shift_reg : std_logic_vector(11 downto 0);  -- Temporary register for shifting
+    signal i         : integer range 0 to 6;           -- Loop counter
+begin
+    process(bin_in)
+    begin
+        -- Initialize shift register: [unused | tens BCD | ones BCD | binary input]
+        shift_reg := "0000000000" & bin_in;
+
+        -- Perform 6 iterations of the Double Dabble algorithm
+        for i in 0 to 5 loop
+            -- Check if "tens" BCD digit needs adjustment
+            if shift_reg(7 downto 4) > "0100" then
+                shift_reg(7 downto 4) := shift_reg(7 downto 4) + "0011";  -- Add 3 if > 4
+            end if;
+
+            -- Check if "ones" BCD digit needs adjustment
+            if shift_reg(3 downto 0) > "0100" then
+                shift_reg(3 downto 0) := shift_reg(3 downto 0) + "0011";  -- Add 3 if > 4
+            end if;
+
+            -- Shift entire register left by 1 bit
+            shift_reg := shift_reg(10 downto 0) & '0';
+        end loop;
+
+        -- Assign the BCD result to the output
+        bcd_out <= shift_reg(7 downto 0);  -- Tens and ones BCD digits
+    end process;
+end Behavioral;

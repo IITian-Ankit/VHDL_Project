@@ -1,0 +1,32 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity CLK_DVD is
+    port(
+        CLK_IN : in std_logic;    
+        RSTN   : in std_logic;    
+        CLK_OUT : out std_logic    
+    );
+end entity;
+
+architecture FUNCTIONALITY of CLK_DVD is
+    signal CNT   : integer := 0; 
+    signal TEMP  : std_logic := '0';  
+begin
+    process(CLK_IN, RSTN)
+    begin
+        if (RSTN = '0') then
+            CNT <= 0;         
+            TEMP <= '0';       
+        elsif rising_edge(CLK_IN) then
+            CNT <= CNT + 1;    
+            if (CNT = 25000000) then
+                TEMP <= not TEMP;  
+                CNT <= 0;          
+            end if;
+        end if;
+    end process;
+
+    CLK_OUT <= TEMP;  
+
+end architecture;
