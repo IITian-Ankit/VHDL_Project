@@ -18,6 +18,7 @@ This project implements a **Medication Reminder System** using **VHDL**, designe
   - Alert Control Unit  
   - Output Interface Logic  
 - Verified via **testbenches** in ModelSim
+- Integrated LCD/7-segment display to show time/alerts
 - Successfully synthesized and deployed on **DE10-Lite FPGA**
 
 ## 📁 Project Structure
@@ -39,6 +40,5 @@ This project implements a **Medication Reminder System** using **VHDL**, designe
 ## 🚀 Future Enhancements
 
 - Add real-time clock (RTC) interface for dynamic scheduling
-- Integrate LCD/7-segment display to show time/alerts
 - Expand for multiple medication schedules
 
