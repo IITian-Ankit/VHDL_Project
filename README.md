@@ -37,8 +37,3 @@ This project implements a **Medication Reminder System** using **VHDL**, designe
 - Programmed on **DE10-Lite FPGA** via USB-Blaster
 - LEDs and/or buzzer connected to GPIO pins for real-time alerts
 
-## 🚀 Future Enhancements
-
-- Add real-time clock (RTC) interface for dynamic scheduling
-- Expand for multiple medication schedules
-
